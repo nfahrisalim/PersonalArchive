@@ -1,4 +1,5 @@
 ---
+title: "Machine Learning Project Report: Predictive Analytics On Adults Income"
 date: "2025-09-08"
 author: "Naufal"
 tags: ["Machine Learning", "Data Science"]
@@ -6,23 +7,23 @@ description: 'A predictive analysis of the Adults Income dataset conducted using
 ---
 
 
-# *** Predictive Analytics On Adults Income ***
+# Machine Learning Project Report: Predictive Analytics On Adults Income
 
 
-## ***Project Domain***
+## Project Domain
 
 
 **Background**
 
 According to a survey by the Central Statistics Agency of Indonesia published on November 6, 2023, the unemployment rate in Indonesia is 5.32 percent [[1]](https://www.bps.go.id/id/pressrelease/2023/11/06/2002/tingkat-pengangguran-terbuka--tpt--sebesar-5-32-persen-dan-rata-rata-upah-buruh-sebesar-3-18-juta-rupiah-per-bulan.html).Although this is a decrease from previous years, it remains an issue that needs to be resolved. The results of the study by Pramudjasi and Juliansyah, 2019 in the FEB Unmul Journal [[2]](https://journal.feb.unmul.ac.id/index.php/KINERJA/article/download/5284/472) stated that the population has a significant positive effect on the unemployment rate. This is also confirmed in the research of Sari and Pangestuty, 2022 in  [[3]](https://jdess.ub.ac.id/index.php/jdess/article/download/78/57/373) stating that population growth has an impact on the increase in the Open Unemployment Rate. Various surveys and findings from this academic journal are the background for the Author in trying to analyze what factors have a strong relationship to unemployment, employment, especially factors that are related to high income.
 
-This project focuses on the analysis of the "Adults Income" dataset with the aim of identifying and predicting factors that have a high correlation, or even contribute to employment, especially the amount of income of a person. In this case, the target feature of this dataset is whether a person's annual income is &lt;50,000 dollars or &gt;= 50,000 dollars per year, so this project will solve the classification case. Although this dataset is taken from the 1996 census data, this dataset still has significant relevance today, due to the general nature of the variables in this dataset and the absence of drastic changes in the components that determine incomedanya perubahan yang drastis pada komponen-komponen penentu penghasilan. 
+This project focuses on the analysis of the "Adults Income" dataset with the aim of identifying and predicting factors that have a high correlation, or even contribute to employment, especially the amount of income of a person. In this case, the target feature of this dataset is whether a person's annual income is `<50,000` dollars or `>= 50,000` dollars per year, so this project will solve the classification case. Although this dataset is taken from the 1996 census data, this dataset still has significant relevance today, due to the general nature of the variables in this dataset and the absence of drastic changes in the components that determine incomedanya perubahan yang drastis pada komponen-komponen penentu penghasilan. 
 
 According to Jepchumba from Microsoft [[4]](https://techcommunity.microsoft.com/t5/educator-developer-blog/getting-started-with-using-visual-machine-learning-tools-for/ba-p/3578397), *machine learning* , is a technique that uses advanced mathematics and statistics to recognize patterns in data that do not exist explicitly, and can predict according to the results of these patterns. With the variety of factors (variables) involved in this project, machine learning is the best solution. Identification and prediction of factors will be done by applying data analysis techniques such as Exploratory Data Analysis (EDA) and using Machine Learning algorithms such as Random Forest, K-Nearest Neighbors, and Boosting .
 
 This project is a small tool to help solve the problem of difficulty in finding work, by analyzing the dynamics of high annual income factors. The results of this project are expected to help the Government and individuals in productive age as additional insight related to this problem, and help these parties to develop society and themselves to improve the quality of life.
 
-## ***Business Understanding***
+## Business Understanding
 
 
 Stakeholder dan sasaran: 
@@ -42,7 +43,7 @@ At the individual level, it is hoped that the results of this project will provi
 2. Able to predict income with an accuracy above 90%.
 
 **Solution Statements (Metodologi)**
-1. The target feature in this dataset is a boolean variable between &gt;50k and &lt;= 50k, so this is a Classification prediction case.
+1. The target feature in this dataset is a boolean variable between `>50k` and `<= 50k`, so this is a Classification prediction case.
 
 2. Perform Exploratory Data Analysis to obtain meaningful information in the data and understand the dynamics of the features.
 
@@ -52,11 +53,11 @@ At the individual level, it is hoped that the results of this project will provi
 
 5. Using Accuracy, Precision, Recall, F1-Score, and Confusion Matrix to evaluate model performance.
 
-## ***Data Understanding***
+## Data Understanding
 
 Dataset: https://archive.ics.uci.edu/dataset/2/adult 
 
-***Dataset Overview***
+### Dataset Overview
 
 The description of the variables in the dataset is as follows:
 
@@ -87,7 +88,7 @@ Detailed description of this dataset is as follows.
 **Description of the data distribution can be seen in the Univariate Analysis and Multivariate Analysis sections below**. 
 
 
-***Univariate Analysis***
+### Univariate Analysis
 ---
 
 ![Univariate Visualization](https://raw.githubusercontent.com/nfahrisalim/PersonalArchive/main/Blog/Predictive-Analysis-On-Adults-Income/UnivariateWork.png "Univariate result")
@@ -288,11 +289,11 @@ In Figure 1.8, it can be seen that the majority of numerical distributions have 
 
 ---
 
-***Analysis and interpretation of Univariate Analysis results:***
+#### Analysis and interpretation of Univariate Analysis results:
 1. Missing values ​​are marked with '?'.
 The majority of the variable distributions are heavily biased towards the mode, with very large percentage differences. This implies that this dataset can be addressed for missing values ​​using statistical methods, such as Mode Imputation .
 
-***Multivariate Analysis***
+### Multivariate Analysis
 ---
 
 ![Multivariate Visualization](https://raw.githubusercontent.com/nfahrisalim/PersonalArchive/main/Blog/Predictive-Analysis-On-Adults-Income/workClass.png "Multivariate result")
@@ -357,7 +358,7 @@ In the visualization of numeric features against income, it can be seen that the
 
 ---
 
-***Analysis and interpretation of Multivariate Analysis results:***
+#### Analysis and interpretation of Multivariate Analysis results:
 
 1. The results of the Multivariate Analysis show that the clearest trends are in educationClass, status, and relationship.
 
@@ -371,7 +372,7 @@ Figure 3.0: Correlation matrix of variables
 The results of the correlation matrix above show that strong features such as educationClass are not too far from the correlation value with low values, such as capital-gain. Therefore, no more column drops will be performed.
 
 
-## ***Data Preparation***
+## Data Preparation
 
 Sequentially, the data preparation processes that will be carried out are as follows:
 1. Features Encoding
@@ -411,7 +412,7 @@ After the explanation regarding the project above, here is the flow that of the 
 4. Standarisasi
 - At this stage standardization is performed on all x_train and x_test on all DataFrames, preparing the data for train and test.
 
-## ***Model Development***
+## Model Development
 
 The Model Development process that the Author will carry out can be divided into several stages: 
 1. DataFrame initialization: prepare dataframes to store the model training results.
@@ -424,7 +425,7 @@ The Model Development process that the Author will carry out can be divided into
 
 Model building and training will be done simultaneously using pipelines. 
 
-***Model Explanation, pros and cons***
+### Model Explanation, pros and cons
 
 ---
 
@@ -514,7 +515,7 @@ In this project, the author uses four algorithms, including Random Forest, K-Nea
     3. More susceptible to outliers.
 
 
-## ***Evaluation***
+## Evaluation
 
 
 In this project, some evaluation metrics used are as follows. Before going into further explanation of the metrics, it is necessary to understand that:: 
@@ -592,7 +593,7 @@ Table 2.2 Evaluation of training Accuracy, Precision, Recall, and F1 Score of KN
 3. The final prediction test will use test data from test_ord, because this dataset implements Ordinal Encoding and has a higher level of integrity than the imputation dataset. Given that the number of this dataset is abundant from the beginning, the Drop method remains the best Data Handling method because of its integrity preservation.
 
 
-***Testing and Final Predictions***
+### Testing and Final Predictions
 
 ---
 
@@ -605,7 +606,7 @@ The final prediction test will use test data from test_ord because this dataset 
 The Testing method will be the same as the Training method, using Pipeline to increase Testing efficiency.
 
 
-***Testing Results***
+### Testing Results
 
 ---
 
@@ -644,7 +645,7 @@ The test results that will be reviewed, and used for the final prediction, are f
 Figure 5.1: Confusion matrix testing
 
 
-***Project Results and Conclusions*** 
+### Project Results and Conclusions 
 ---
 
 Based on the results of Data Understanding, Data Preparation, Model Development, and Evaluation, we can conclude the following things.
@@ -658,7 +659,7 @@ Based on the findings above, it can be concluded that this project was successfu
 
 
 
-***Referensi***
+### Referensi
 ---
 
 [Dataset] Becker, Barry and Kohavi ,Ronny. (1996). Adult. UCI Machine Learning Repository. https://doi.org/10.24432/C5XW20. 
@@ -673,7 +674,7 @@ Based on the findings above, it can be concluded that this project was successfu
 
 [5] Google Machine Learning Developers. Normalization. Diakses dari https://developers.google.com/machine-learning/data-prep/transform/normalization#:~:text=The%20goal%20of%20normalization%20is,training%20stability%20of%20the%20model.
 
-***Daftar Pustaka***
+### Daftar Pustaka
 ---
 
 [1] P. Schmitt, J. Mandel, M. Guedj. (2015). A Comparison of Six Methods for Missing Data Imputation. Journal of Biometrics and Biostatics. DOI: 10.472/2155-6180.1000224. Diakses dari https://www.hilarispublisher.com/open-access/a-comparison-of-six-methods-for-missing-data-imputation-2155-6180-1000224.pdf.
