@@ -86,9 +86,9 @@ Here, we're going to **forward pass** the input data to **Hidden Layer 1**. What
 
 The values above are the **inputs for each node** in Hidden Layer 1. These values will then be passed through the **activation function**.
 
-For Hidden Layer 1, we're using **ReLU**, which is defined as:
+For Hidden Layer 1, we're using ReLU, which is defined as:
 
-$$f(x) = \max(0, x)$$
+f(x) = max(0, x)
 
 So, the **output of Hidden Layer 1** will be:
 
@@ -121,9 +121,9 @@ Just like the forward pass in the previous layer, the **output from each neuron*
 ```
 **After applying the activation function:**
 
-Once the inputs go through the **Sigmoid activation function**, each value is transformed using:
+Once the inputs go through the Sigmoid activation function, each value is transformed using:
 
-$$f(x) = \frac{1}{1 + e^{-x}}$$
+f(x) = 1 / (1 + e^{-x})
 
 This gives us the **final output values** for the Sigmoid layer.
 ```
@@ -157,11 +157,9 @@ Linear([oin]) = [2.494]
 
 We've reached the **output layer** and got our **predicted output value**.
 
-Next, we'll calculate the **loss** using **Squared Error (L2 Loss)**:
+Next, we'll calculate the **loss** using Squared Error (L2 Loss):
 
-$$L = \frac{1}{2}(y_{pred} - y_{true})^2$$
-
-This will show us how far off our prediction is from the actual target value.
+L = 1/2 (y_pred - y_true)^2
 ```
 Loss = 1/2(Prediction - Target)²
 Loss = 1/2(oout - output)²
@@ -172,7 +170,4 @@ Loss = 0.128
 ```
 Why do we multiply by **1/2**? 🤔
 
-Don't worry, i'll explain this in more detail later — but the short answer is that it **simplifies the math** when we take the derivative during backpropagation.
-Loss = 1/2(0.256)
-Loss = 0.128
-```
+Don't worry, I'll explain this in more detail later — but the short answer is that it **simplifies the math** when we take the derivative during backpropagation.
