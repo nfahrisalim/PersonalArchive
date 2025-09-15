@@ -89,7 +89,9 @@ The values above are the **inputs for each node** in Hidden Layer 1. These value
 
 For Hidden Layer 1, we're using ReLU, which is defined as:
 
+```
 f(x) = max(0, x)
+```
 
 So, the **output of Hidden Layer 1** will be:
 
@@ -124,7 +126,9 @@ Just like the forward pass in the previous layer, the **output from each neuron*
 
 Once the inputs go through the Sigmoid activation function, each value is transformed using:
 
+```
 f(x) = 1 / (1 + e^{-x})
+```
 
 This gives us the **final output values** for the Sigmoid layer.
 ```
@@ -160,7 +164,9 @@ We've reached the **output layer** and got our **predicted output value**.
 
 Next, we'll calculate the **loss** using Squared Error (L2 Loss):
 
+```
 L = 1/2 (y_pred - y_true)^2
+```
 ```
 Loss = 1/2(Prediction - Target)²
 Loss = 1/2(oout - output)²
