@@ -1,0 +1,181 @@
+---
+date: "2025-09-15"
+author: "Naufal"
+tags: ["Machine Learning", "Data Science"]
+description: 'a comprehensive narrative analysis of Xenoblade Chronicles 3, positioning it as the culmination of the "Klaus Saga" trilogy. It explores how the game delves into existential themes of life, death, and the importance of moving forward amidst uncertainty.'
+---
+
+
+# An Introduction to Backpropagation
+
+The training process has two main parts: the Forward Pass and the Backward Pass. The blue arrow below shows the Forward Pass, and the red arrow shows the Backward Pass.
+
+![Neural Network Diagram](Blog\Backpropagation\NeuralNN.png)
+
+In Supervised Learning, the training data consists of inputs and outputs/targets. During the forward pass, the input is **propagated** through the network to the output layer, and the predicted output is then compared to the target using a function called the **Loss Function**.
+
+So, what's the point of a loss function? Simply put, it's used to measure how well our neural network is performing when predicting the target.
+
+```
+Loss = (Target - Prediction)²
+```
+There are many types of loss functions, but the most common one for regression is **Squared Error (L2 Loss)**. For classification tasks, **Cross Entropy** is the one that’s usually used.
+
+## Backward Pass (Back-Propagation)
+
+Simply put, this process aims to adjust each weight and bias based on the error calculated during the forward pass. The steps of backpropagation are as follows:
+
+1. **Calculate the gradient** of the loss function with respect to all the parameters by finding the **partial derivatives** of the function.
+2. Here, we use the **Chain Rule** (yep, good old calculus \:D).
+
+If you're still a bit confused about what a gradient is, the illustration below might help.
+
+![Gradient Illustration](Blog\Backpropagation\gradient.gif)
+
+**Update all the parameters** (weights and biases) using **Stochastic Gradient Descent (SGD)** by adjusting the old weights either increasing or decreasing them — by a **fraction** (the learning rate) of the gradient we’ve calculated.
+
+Grab a piece of paper and a calculator let's check out the example below to make things clearer!
+
+![Layer Diagram](Blog\Backpropagation\Layer.png)
+
+The neural network above has **2 hidden layers**. The first hidden layer uses **ReLU**, the second hidden layer uses **Sigmoid**, and finally, the output layer uses a **Linear** activation function. The biases are actually there, but they’re not shown in the diagram.
+
+Here’s the breakdown of the parameters:
+
+* **4 weights** and **4 biases** between the input layer and the first hidden layer.
+* **8 weights** and **2 biases** between the first and second hidden layers.
+* **2 weights** and **1 bias** between the second hidden layer and the output layer.
+
+So, in total, there are **21 parameters** that need to be updated.
+
+We're going to try predicting a value. For the initial weights and biases, I'll just pick some nice, easy-to-read numbers. \:D
+
+```
+input = [2.0]; output = [3.0]
+
+W_ij = [w_i1  w_i2  w_i3  w_i4] = [0.25  0.5  0.75  1.0]
+
+       [w_j1k1  w_j1k2]   [1.0   0  ]
+W_jk = [w_j2k1  w_j2k2] = [0.75  0.25]
+       [w_j3k1  w_j3k2]   [0.5   0.5 ]
+       [w_j4k1  w_j4k2]   [0.25  0.75]
+
+       [w_k1o]   [1.0]
+W_ko = [w_k2o] = [0.5]
+
+b_ij = [b_j1  b_j2  b_j3  b_j4] = [1.0  1.0  1.0  1.0]
+
+b_jk = [b_k1  b_k2] = [1.0  1.0]
+
+b_o = [1.0]
+```
+
+## Forward Pass (Input -> Hidden Layer 1)
+
+![Forward Pass Diagram](Blog\Backpropagation\Forward.png)
+
+Here, we're going to **forward pass** the input data to **Hidden Layer 1**. What we'll do is perform a **dot product** (multiplication) and **matrix addition** between the inputs, weights, and biases.
+
+```
+[j1in  j2in  j3in  j4in] = [input] × [wi1  wi2  wi3  wi4] + [bi1  bi2  bi3  bi4]
+[j1in  j2in  j3in  j4in] = [2.0] × [0.25  0.5  0.75  1.0] + [1.0  1.0  1.0  1.0]
+[j1in  j2in  j3in  j4in] = [2.0] × [0.25  0.5  0.75  1.0] + [1.0  1.0  1.0  1.0]
+                [j1in  j2in  j3in  j4in] = [0.5  1  1.5  2] + [1.0  1.0  1.0  1.0]
+                          [j1in  j2in  j3in  j4in] = [1.5  2.0  2.5  3.0]
+```
+
+The values above are the **inputs for each node** in Hidden Layer 1. These values will then be passed through the **activation function**.
+
+For Hidden Layer 1, we’re using **ReLU**, which is defined as:
+
+$$
+f(x) = \max(0, x)
+$$
+
+So, the **output of Hidden Layer 1** will be:
+
+```
+ReLU([j1in  j2in  j3in  j4in]) = [max(0, j1in)  max(0, j2in)  max(0, j3in)  max(0, j4in)]
+ReLU([j1in  j2in  j3in  j4in]) = [max(0, 1.5)  max(0, 2.0)  max(0, 2.5)  max(0, 3.0)]
+                    ReLU([j1in  j2in  j3in  j4in]) = [1.5  2.0  2.5  3.0]
+                              [j1out  j2out  j3out  j4out] = [1.5  2.0  2.5  3.0]
+```
+
+
+## Forward Pass (Hidden Layer 1 -> Hidden Layer 2)
+
+![Layer 2 Diagram](Blog\Backpropagation\Layer2.png)
+
+Just like the forward pass in the previous layer, the **output from each neuron** in the ReLU layer flows into **every neuron** in the Sigmoid layer.
+```
+[k1in  k2in] = [j1out  j2out  j3out  j4out] × [wj1k1  wj1k2] + [bjk1  bjk2]
+                                              [wj2k1  wj2k2]
+                                              [wj3k1  wj3k2]
+                                              [wj4k1  wj4k2]
+
+[k1in  k2in] = [1.5  2  2.5  3.0] × [1.0   0  ] + [1.0  1.0]
+                                     [0.75  0.25]
+                                     [0.5   0.5 ]
+                                     [0.25  0.75]
+
+[k1in  k2in] = [5.0  4.0] + [1.0  1.0]
+[k1in  k2in] = [6.0  5.0]
+```
+**After applying the activation function:**
+
+Once the inputs go through the **Sigmoid activation function**, each value is transformed using:
+
+$$
+f(x) = \frac{1}{1 + e^{-x}}
+$$
+
+This gives us the **final output values** for the Sigmoid layer.
+```
+Sigmoid([k1in  k2in]) = [1/(1+e^(-k1in))  1/(1+e^(-k2in))]
+Sigmoid([k1in  k2in]) = [1/(1+e^(-6))  1/(1+e^(-5))]
+Sigmoid([k1in  k2in]) = [0.9975  0.9933]
+[k1out  k2out] = [0.9975  0.9933]
+```
+
+## Forward Pass (Hidden Layer 2 -> Output)
+
+![Output Diagram](Blog\Backpropagation\Output.png)
+
+Just like the previous forward pass, the **output from each neuron** in the **Sigmoid layer** flows into the **neuron in the Linear layer (Output layer)**.
+```
+[oin] = [k1out  k2out] × [wk1o] + [bo]
+                         [wk2o]
+
+[oin] = [0.9975  0.9933] × [1.0] + [bo]
+                           [0.5]
+
+[oin] = [1.494] + [1.0]
+[oin] = [2.494]
+```
+**After applying the activation function:**
+ 
+```
+Linear([oin]) = [2.494]
+[oout] = [2.494]
+```
+
+We’ve reached the **output layer** and got our **predicted output value**.
+
+Next, we’ll calculate the **loss** using **Squared Error (L2 Loss)**:
+
+$$
+L = \frac{1}{2}(y_{pred} - y_{true})^2
+$$
+
+This will show us how far off our prediction is from the actual target value.
+```
+Loss = 1/2(Prediction - Target)²
+Loss = 1/2(oout - output)²
+Loss = 1/2(2.494 - 3)²
+Loss = 1/2(-0.506)²
+Loss = 1/2(0.256)
+Loss = 0.128
+```
+Why do we multiply by **1/2**? *🤔*
+
+Don’t worry, i’ll explain this in more detail later — but the short answer is that it **simplifies the math** when we take the derivative during backpropagation.
