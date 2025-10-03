@@ -30,15 +30,15 @@ Using the `requests` library is a common starting point for scraping, but modern
 - Respecting rate limits to prevent **429** errors
 - Ability to resume after interruptions
 
-## The Toolkit: Python, BeautifulSoup, and curl-cffi
+## The Toolkit
 
-My toolkit is lean yet powerful:
+I decided to keep the toolkit simple but effective.
 
-- **Python**: A versatile language ideal for web scraping.
-- **BeautifulSoup4**: The standard for parsing HTML and extracting data.
-- **curl-cffi**: The key tool. It's a curl-impersonate binding that mimics real browser requests, making it faster and less resource-intensive than Selenium.
+- **Python** is flexible and works very well for building a scraper.
+- **BeautifulSoup4** makes it straightforward to parse HTML and pull out the pieces of data I need.
+- **curl-cffi** is the core tool here since it can impersonate real browsers, which helps me bypass blocks without the heavy overhead of Selenium.
 
-## Step 1: Discovering Every Operator
+## Discovering Every Operator
 
 The first step is to compile a list of all operator URLs. The wiki organizes operators into categories ("Alternate," "Welfare," etc.), which I scraped to gather links.
 
@@ -69,7 +69,7 @@ def scrape_alternate(url):
 
 I wrote similar functions for other categories to get a complete list of unique operator URLs.
 
-## Step 2: Extracting Operator Details
+## Extracting Operator Details
 
 With the URLs gathered, I visited each page to parse its content. Key data is found in infobox and attribute tables. BeautifulSoup helped me target these elements to extract stats like Class, HP, ATK, and DEF.
 
@@ -98,7 +98,7 @@ def parse_operator_detail(url):
     return data
 ```
 
-## Step 3: Making the Scraper Reliable
+## Making the Scraper Reliable
 
 This is where I focused on error handling and continuity.
 
