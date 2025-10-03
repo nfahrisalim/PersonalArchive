@@ -1,0 +1,116 @@
+---
+title: "Understanding RSA Encryption with Simple Numbers"
+date: "2025-10-02"
+author: "Naufal"
+tags: ["Cryptography", "Encryption"]
+description: 'An easy-to-follow explanation of how RSA public-key cryptography works, illustrated with small prime numbers and step-by-step calculations.'
+---
+
+# Understanding RSA Encryption with Simple Numbers
+
+When we talk about today’s increasingly connected digital world, information security becomes a top priority. One of the most widely used methods for protecting sensitive data is the **RSA algorithm**. Although it might sound complex, it can actually be understood step by step.
+
+## What is the RSA Algorithm?
+
+RSA stands for **Rivest–Shamir–Adleman**, the inventors of the algorithm. It is a form of **public-key cryptography** that is widely used around the world. RSA secures messages or data by encrypting them with a **public key** (which can be shared with anyone). Only the **private key** holder can decrypt the data, and vice versa.
+
+![How RSA Works](https://sectigostore.com/blog/wp-content/uploads/2020/06/how-rsa-works.png)
+
+## How Does RSA Work?
+
+RSA key generation starts with two prime numbers.
+
+Take small primes for example
+
+- p = 3  
+- q = 7  
+
+### Step 1: Calculate the Modulus
+
+```
+N = p * q
+N = 3 * 7
+N = 21
+```
+
+### Step 2: Calculate Euler’s Totient (φ)
+
+```
+r = (p-1) * (q-1)
+r = (3-1) * (7-1)
+r = 12
+```
+
+### Step 3: Choose e such that gcd(e, r) = 1
+
+We need numbers where (e * d) mod r = 1. Some candidates are
+
+```
+13, 25, 37, 49, 61, 73, 85, 97, 109, 121, 133, 145, 157, 169, 181,
+193, 205, 217, 229, 241, 253, 265, 277, 289, 301, 313, 325, 337,
+349, 361
+```
+
+From these, I pick 85 as an example (85 = 5 × 17). That gives me
+
+- e = 5  
+- d = 17  
+
+So the keys are
+
+- Private key = (21, 5)  
+- Public key = (21, 17)
+
+### Step 4: Encryption
+
+Encrypting message M = 4 (must be less than N)
+
+```
+Cipher = (M^e) mod N
+Cipher = (4^5) mod 21
+Cipher = 16
+```
+
+The encrypted value of 4 with the private key (21, 5) is 16.
+
+### Step 5: Decryption
+
+```
+Message = (Cipher^d) mod N
+Message = (16^17) mod 21
+Message = 4
+```
+
+And I get back the original number 4.
+
+### Example With a Word
+
+RSA works on numbers, so to encrypt a word like **Makassar**, each character is converted to its ASCII code. For example:
+
+```
+M = 77
+A = 65
+K = 75
+A = 65
+S = 83
+S = 83
+A = 65
+R = 82
+```
+
+Each number is then encrypted using the key pair. With the toy keys (21, 5) and (21, 17):
+
+```
+77 mod 21 = 14  → Cipher = (14^5) mod 21 = 11 → Decrypt = (11^17) mod 21 = 14 → Back to 77 (M)
+65 mod 21 = 2   → Cipher = (2^5) mod 21 = 11  → Decrypt = (11^17) mod 21 = 2  → Back to 65 (A)
+75 mod 21 = 12  → Cipher = (12^5) mod 21 = 18 → Decrypt = (18^17) mod 21 = 12 → Back to 75 (K)
+...
+```
+
+Doing this for every letter will eventually reconstruct the full word **Makassar**. 
+
+This demonstrates that RSA can encrypt and then decrypt both numbers and text, as long as the message is first expressed in numerical form.
+
+---
+
+With this step-by-step breakdown, RSA becomes less of a mystery and more of a clear process that turns prime numbers into a working encryption system.
