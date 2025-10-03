@@ -1,0 +1,158 @@
+---
+title: "Building an Arknights Operator Scraper with Python and curl-cffi"
+date: "2025-10-03"
+author: "Naufal"
+tags: ["Web Scraping", "Python"]
+description: 'A walkthrough of my thought process in creating a web scraper for the Arknights Wiki. Covers browser impersonation with curl-cffi, handling rate limits, and adding resume functionality.'
+---
+
+# Building an Arknights Operator Scraper with Python and curl-cffi
+
+Arknights is a tower defense mobile game that I have been playing for over a year now. The fans have created multiple tools and portals to aid in each other’s progress. Inspired by them, I decided to start working on a Data Science personal project for the game.
+
+If you just want to see the code directly, you can check it out here: [https://github.com/nfahrisalim/Arknights-Data-Scraper.git](https://github.com/nfahrisalim/Arknights-Data-Scraper.git).
+
+What I am sharing here is not a full tutorial, but more of a thought process and a walkthrough of how I arrived at the final working script.
+
+## The Challenge: Why Not Just Use `requests`?
+
+Using the `requests` library is a common starting point for scraping, but modern sites like the Arknights Wiki employ protections that can block simple scripts, returning a **403 Forbidden** error. A reliable scraper must address key challenges:
+
+- Browser impersonation to avoid blocks
+- Respecting rate limits to prevent **429** errors
+- Ability to resume after interruptions
+
+## The Toolkit: Python, BeautifulSoup, and curl-cffi
+
+My toolkit is lean yet powerful:
+
+- **Python**: A versatile language ideal for web scraping.
+- **BeautifulSoup4**: The standard for parsing HTML and extracting data.
+- **curl-cffi**: The key tool. It's a curl-impersonate binding that mimics real browser requests, making it faster and less resource-intensive than Selenium.
+
+## Step 1: Discovering Every Operator
+
+The first step is to compile a list of all operator URLs. The wiki organizes operators into categories ("Alternate," "Welfare," etc.), which I scraped to gather links.
+
+```python
+from bs4 import BeautifulSoup
+from curl_cffi.requests import Session as CurlSession
+
+BASE_URL = "https://arknights.wiki.gg"
+SESSION = CurlSession(impersonate="chrome110")
+
+def scrape_alternate(url):
+    res = SESSION.get(url)
+    soup = BeautifulSoup(res.text, "html.parser")
+    ops = []
+    # Find all operator tables on the page
+    for table in soup.select("table.mrfz-wtable"):
+        # Skip header rows
+        for row in table.select("tr")[2:]:
+            cols = row.select("td")
+            if len(cols) >= 2:
+                for col in cols[:2]:
+                    a = col.select_one("a[href^='/wiki/']")
+                    # Ensure it's a valid operator link
+                    if a and not a["href"].startswith("/wiki/File:"):
+                        ops.append((a.get("title"), BASE_URL + a["href"]))
+    return ops
+```
+
+I wrote similar functions for other categories to get a complete list of unique operator URLs.
+
+## Step 2: Extracting Operator Details
+
+With the URLs gathered, I visited each page to parse its content. Key data is found in infobox and attribute tables. BeautifulSoup helped me target these elements to extract stats like Class, HP, ATK, and DEF.
+
+```python
+def parse_operator_detail(url):
+    res = SESSION.get(url)
+    soup = BeautifulSoup(res.text, "html.parser")
+    data = {"URL": url}
+
+    # Extract general info from the infobox
+    info_table = soup.find("td", {"style": "padding:0 1em;"}).find_parent("table")
+    if info_table:
+        for row in info_table.select("tr"):
+            header = row.find("b")
+            if header and header.find_parent("td").find_next_sibling("td"):
+                key = header.get_text(strip=True)
+                val = header.find_parent("td").find_next_sibling("td").get_text(" ", strip=True)
+                if key in ["Class", "Branch", "Position", "Tags", "Trait"]:
+                    data[key] = val
+
+    # Extract core stats from the attributes table
+    stats_table = soup.select_one("table#operator-attribute-table")
+    if stats_table:
+        # ... (logic to parse HP, ATK, DEF rows) ...
+
+    return data
+```
+
+## Step 3: Making the Scraper Reliable
+
+This is where I focused on error handling and continuity.
+
+### Handling Blocks and Rate Limits
+
+To make the scraper more reliable, I wrapped `SESSION.get()` in a function that automatically retries on 429 or 403 errors. It uses an **exponential backoff** strategy, waiting and doubling the delay after each failure.
+
+```python
+import time
+from curl_cffi.requests import RequestsError
+
+def get_url_with_retries(url, max_retries=5, initial_delay=5):
+    delay = initial_delay
+    for attempt in range(max_retries):
+        try:
+            res = SESSION.get(url, timeout=30)
+            res.raise_for_status() # Raise an exception for bad status codes
+            return res
+        except RequestsError as e:
+            status_code = e.response.status_code if hasattr(e, 'response') and e.response else None
+            if status_code in [429, 403]:
+                print(f"⚠️ Status {status_code} received. Retrying in {delay} seconds...")
+                time.sleep(delay)
+                delay *= 2 # Double the delay
+            else:
+                print(f"❌ Connection error: {e}. Retrying in {delay} seconds...")
+                time.sleep(delay)
+                delay *= 2
+    raise Exception(f"Failed to fetch {url} after {max_retries} attempts.")
+```
+
+### Resuming from Interruptions
+
+To avoid losing progress during long jobs, I made the script read the output CSV on startup. It identifies already scraped URLs and skips them, allowing it to resume seamlessly after an interruption.
+
+```python
+import os
+import csv
+
+OUTPUT_CSV = "arknights_operators_full.csv"
+scraped_urls = set()
+
+# Check for an existing CSV to resume progress
+try:
+    with open(OUTPUT_CSV, 'r', newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if 'URL' in row:
+                scraped_urls.add(row['URL'])
+    if scraped_urls:
+        print(f"✅ Found {len(scraped_urls)} operators. Resuming...")
+except FileNotFoundError:
+    print("✅ Starting a new scraping session.")
+
+# Filter out already scraped operators
+ops_to_scrape = [op for op in unique_ops if op[1] not in scraped_urls]
+```
+
+## The Final Output
+
+The final output is a clean `arknights_operators_full.csv`, structured for analysis with detailed operator stats. By combining curl-cffi for impersonation with error handling and resume logic, I ended up with a scraper that works efficiently and reliably.
+
+---
+
+Happy scraping!
