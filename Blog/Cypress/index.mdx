@@ -1,0 +1,184 @@
+---
+title: "Cypress"
+date: "2025-10-17"
+author: "Naufal"
+tags: ["Cypress", "Test Automation", "E2E Testing", "Quality Assurance"]
+description: 'A comprehensive guide to Cypress, the modern end-to-end testing framework for web applications, featuring real-time feedback, automatic waits, and powerful debugging tools.'
+---
+
+# Cypress
+Testing web applications can sometimes feel like herding cats — unpredictable, time-consuming, and prone to chaos. But fear not **Cypress** steps in to bring order, speed, and visibility to the entire testing process.
+
+Cypress is a **modern end-to-end testing framework** built for the web. It's fast, developer-friendly, and deeply integrated with the browser — giving you the power to test everything from basic UI flows to complex user interactions, with real-time feedback and powerful debugging tools.
+
+If Selenium feels like a traditional tester's toolkit, Cypress is its modern, all-in-one cousin made for today's JavaScript-heavy applications.
+
+---
+
+### Introduction to Cypress
+
+At its core, **Cypress** helps you test how your web application behaves in the real world. Unlike older testing tools that run outside the browser, Cypress executes directly **inside** the browser's runtime environment. This means it can see everything your app can see including DOM changes, network requests, and browser events.
+
+It supports not just **end-to-end (E2E)** testing but also **integration** and **component testing**, making it a perfect fit for frontend developers and QA engineers alike.
+
+**Key Highlights:**
+
+* Runs directly inside the browser for realistic results.
+* Real-time test runner shows exactly what's happening.
+* Simple setup — no drivers or complex configurations.
+* Built-in waits eliminate most timing issues.
+* Ideal for modern web apps built with React, Vue, or Angular.
+
+---
+
+### Setting Up Cypress
+
+One of Cypress's greatest strengths is its simplicity. You can get started in minutes no browser drivers, no environment headaches.
+
+**Step 1:** Install Cypress using npm:
+
+```bash
+npm install cypress --save-dev
+```
+
+**Step 2:** Open Cypress:
+
+```bash
+npx cypress open
+```
+
+This launches the **interactive Test Runner**, where you can run and visualize your tests.
+Each command executes in real-time, and Cypress even records screenshots and videos of your test runs. It's like watching your code perform on stage — except this time, it doesn't forget its lines.
+
+---
+
+### Core Cypress Commands
+
+Cypress provides a powerful yet easy-to-read command set that feels almost like natural language.
+
+```javascript
+cy.visit('https://your-app.com')           // Navigate to a page
+cy.get('button').click()                   // Click a button
+cy.get('input[name="username"]').type('john_doe') // Type into an input field
+cy.contains('Welcome')                     // Find element containing text
+cy.url().should('include', '/dashboard')   // Assert on the current URL
+```
+
+All Cypress commands are **asynchronous** and automatically **wait for elements to be ready** no need for manual delays or sleep commands. This eliminates one of the most frustrating problems in UI testing: flaky tests caused by timing issues.
+
+---
+
+### Cypress vs. Selenium: Feature Comparison
+
+| **Feature**               | **Cypress**                                               | **Selenium**                                            |
+| ------------------------- | --------------------------------------------------------- | ------------------------------------------------------- |
+| **Architecture**          | Runs directly in the browser (same event loop as the app) | Runs outside the browser using WebDriver                |
+| **Language Support**      | JavaScript / TypeScript                                   | Multi-language (Java, Python, JS, etc.)                 |
+| **Test Runner**           | Built-in interactive GUI                                  | No built-in runner (relies on tools like JUnit, TestNG) |
+| **Automatic Waits**       | ✅ Built-in                                                | ❌ Manual waits required                                 |
+| **Debugging Tools**       | Time-travel snapshots, DevTools integration               | Console logs, external debugging                        |
+| **Setup Complexity**      | Simple (no drivers)                                       | Requires driver setup and config                        |
+| **Parallelization**       | Limited (advanced mode in paid Dashboard)                 | Supported via external tools                            |
+| **Community & Ecosystem** | Modern and growing rapidly                                | Mature and widely adopted                               |
+
+In short:
+
+* Selenium is **flexible and language-agnostic**, perfect for large, multi-tech teams.
+* Cypress is **modern, fast, and visual**, perfect for frontend-heavy JavaScript projects.
+
+---
+
+### Why Choose Cypress?
+
+Cypress redefines the testing experience by integrating the test runner, debugger, and browser into one seamless workflow.
+
+Here's why many teams are switching to it:
+
+* **Modern Architecture:** Cypress runs directly inside the browser, giving full access to the DOM, network, and console.
+* **Real-Time Feedback:** You see every command executed, every element clicked, every assertion checked instantly.
+* **Time Travel Debugging:** Hover over each step in the Cypress Test Runner to see a visual snapshot of your app at that exact moment.
+* **Automatic Waiting:** Cypress automatically waits for elements to appear before executing the next command, drastically reducing flakiness.
+* **Developer-Friendly:** Built entirely on JavaScript, it integrates naturally with frontend stacks and CI pipelines like GitHub Actions or Jenkins.
+
+With Cypress, debugging feels less like detective work and more like having x-ray vision into your application.
+
+---
+
+### Sample Test Cases
+
+To see Cypress in action, let's test the login functionality on [SauceDemo](https://www.saucedemo.com/).
+We'll define three typical scenarios.
+
+| **Test Case ID** | **Description**               | **Steps Covered**                  | **Expected Result**                              |
+| ---------------- | ----------------------------- | ---------------------------------- | ------------------------------------------------ |
+| **TC01**         | Successful Login              | Login with valid credentials       | Redirects to inventory page                      |
+| **TC02**         | Login with Incorrect Password | Login with wrong password          | Displays error message about invalid credentials |
+| **TC03**         | Login with Empty Username     | Submit login form without username | Displays "Username is required" message          |
+
+---
+
+### TC01: Successful Login
+
+```javascript
+cy.visit('https://www.saucedemo.com/')
+cy.get('[data-test="username"]').type('standard_user')
+cy.get('[data-test="password"]').type('secret_sauce')
+cy.get('[data-test="login-button"]').click()
+cy.url().should('include', '/inventory.html')
+```
+
+✅ **Expected Result:** The user is redirected to the inventory page, confirming successful login.
+
+---
+
+### TC02: Login with Incorrect Password
+
+```javascript
+cy.visit('https://www.saucedemo.com/')
+cy.get('[data-test="username"]').type('standard_user')
+cy.get('[data-test="password"]').type('wrong_password')
+cy.get('[data-test="login-button"]').click()
+cy.get('[data-test="error"]').should('contain', 'Username and password do not match')
+```
+
+⚠️ **Expected Result:** The login fails, and an error message appears stating invalid credentials.
+
+---
+
+### TC03: Login with Empty Username
+
+```javascript
+cy.visit('https://www.saucedemo.com/')
+cy.get('[data-test="username"]').clear()
+cy.get('[data-test="password"]').type('secret_sauce')
+cy.get('[data-test="login-button"]').click()
+cy.get('[data-test="error"]').should('contain', 'Username is required')
+```
+
+❌ **Expected Result:** Cypress verifies that the app displays a "Username is required" message when attempting login without entering a username.
+
+---
+
+### Cypress Testing Insights
+
+* Cypress automatically **waits** for elements and network calls — no manual `sleep()` needed.
+* You can use `.should()` assertions for validations on elements, text, or URLs.
+* The Test Runner provides **video recordings** and **screenshots** of failed tests, making debugging a breeze.
+* Cypress tests can run in **headless mode** (no GUI) for CI/CD pipelines:
+
+  ```bash
+  npx cypress run
+  ```
+
+---
+
+### Conclusion
+
+Cypress is a game-changer for web application testing — blending speed, simplicity, and powerful debugging in a single framework.
+It's built for the modern web, making testing less of a chore and more of a joy.
+
+With its intuitive API, automatic waits, and real-time visualization, Cypress turns testing into a superpower — not just a requirement.
+
+So, whether you're validating a login flow or automating a full regression suite, **Cypress** gives you the control, clarity, and confidence to release your web apps with peace of mind.
+
+> Sit back, run your tests, and enjoy watching them pass because with Cypress, testing finally feels good.

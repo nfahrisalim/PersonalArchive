@@ -1,0 +1,254 @@
+---
+title: "Selenium WebDriver"
+date: "2025-10-16"
+author: "Naufal"
+tags: ["Selenium", "Test Automation", "Web Testing", "Quality Assurance"]
+description: 'A comprehensive guide to Selenium WebDriver for browser automation, covering installation, common actions, and practical test scenarios with live coding examples.'
+---
+
+# Selenium WebDriver
+Ever wished you had a robot that could click buttons, type passwords, and run your web tests while you sit back with a cup of coffee?
+Meet **Selenium WebDriver** — your friendly browser automation assistant that never gets tired, never mistypes, and never complains (unless you forget to close the browser).
+
+Selenium WebDriver is one of the most widely used tools in **web application testing**. It allows you to control browsers programmatically, simulate real user interactions, and validate that everything on your website behaves exactly as it should.
+
+Whether you're testing a login form, a shopping cart, or a search feature, Selenium helps ensure your app performs reliably across different browsers and operating systems.
+
+---
+
+### What is Selenium WebDriver?
+
+**Selenium WebDriver** is an open-source framework used to automate web browsers. It allows testers and developers to write scripts that interact with web elements—clicking buttons, entering text, selecting dropdowns, and verifying outputs—just like a real user would.
+
+You can write Selenium tests in various programming languages such as **Python**, **Java**, **C#**, **JavaScript**, or **Ruby**, and run them on browsers like **Chrome**, **Firefox**, **Edge**, or **Safari**.
+
+#### Key Features of Selenium WebDriver
+
+* **Open Source & Free** – No licenses or fees required.
+* **Cross-Browser Compatibility** – Works on Chrome, Firefox, Edge, Safari, and Opera.
+* **Multi-Language Support** – Choose your preferred language (Python, Java, C#, etc.).
+* **Cross-Platform** – Runs on Windows, macOS, or Linux seamlessly.
+* **Framework Integration** – Works perfectly with **Pytest**, **JUnit**, **TestNG**, and CI/CD tools.
+* **Strong Community Support** – Plenty of documentation, examples, and troubleshooting forums.
+
+---
+
+### Why Choose Selenium?
+
+If you're tired of manually checking every page after each code change, Selenium is your ticket to freedom. It automates repetitive browser interactions and speeds up your testing process dramatically.
+
+Here's why Selenium remains the **industry standard** for browser automation:
+
+* It **mimics real user behavior**, not just backend calls.
+* It **supports multiple browsers**, so you can ensure cross-browser consistency.
+* It **integrates easily** with other testing tools and continuous integration systems.
+* It's **scalable** — from small test scripts to full regression suites.
+
+> Selenium helps testers focus less on clicking and more on catching bugs that really matter.
+
+---
+
+### How Does Selenium WebDriver Work?
+
+Think of WebDriver as the **bridge** between your code and the web browser.
+
+Here's a simple workflow:
+
+1. **You write a test script** in your favorite programming language (like Python).
+2. **Your code communicates with the WebDriver** (e.g., ChromeDriver).
+3. **The WebDriver controls the browser**, executing your commands such as clicking, typing, and navigating.
+4. **The browser responds**, and Selenium verifies whether the outcome matches your expected result.
+
+It's like sending instructions to a very obedient assistant who does exactly what you say — as long as you say it correctly.
+
+---
+
+### Common Selenium Actions
+
+With Selenium, you can automate nearly any browser interaction:
+
+* Clicking buttons and links
+* Typing into input fields
+* Selecting dropdown values
+* Navigating through pages
+* Checking for expected text or elements
+* Taking screenshots for visual validation
+
+These simple actions can be combined into powerful test scenarios that simulate real-world user behavior.
+
+---
+
+### Getting Started: Installing Selenium with Python
+
+Installation is quick and painless.
+Run the following command in your terminal:
+
+```bash
+pip install selenium
+```
+
+Next, download a **browser driver** compatible with your browser (e.g., [ChromeDriver](https://chromedriver.chromium.org/)) and add it to your system PATH.
+
+You're now ready to start automating!
+
+---
+
+### Opening a Browser with Selenium
+
+Here's a minimal Python example to open a webpage:
+
+```python
+from selenium import webdriver
+
+driver = webdriver.Chrome()
+driver.get("https://example.com")
+```
+
+That's it — Chrome opens automatically, navigates to the page, and waits for your next command. You didn't even touch the mouse!
+
+---
+
+### Interacting with HTML Elements
+
+Selenium provides flexible ways to locate elements — by **ID**, **class name**, **tag name**, **name**, **CSS selector**, or **XPath**.
+
+**Example: Typing a username and clicking a login button**
+
+```python
+from selenium.webdriver.common.by import By
+
+username = driver.find_element(By.ID, "user-name")
+username.send_keys("standard_user")
+
+login_button = driver.find_element(By.ID, "login-button")
+login_button.click()
+```
+
+Selenium will:
+
+1. Find the username input field.
+2. Type the credentials.
+3. Click the login button.
+
+Congratulations — you've just automated your first interaction!
+
+---
+
+### Live Coding Example: SauceDemo
+
+Let's bring everything together using [SauceDemo](https://www.saucedemo.com/), a popular website for Selenium practice.
+
+We'll automate three common test scenarios.
+
+---
+
+### Test Scenarios
+
+| **Scenario ID** | **Description**                         |
+| --------------- | --------------------------------------- |
+| **TS-001**      | Successful login with valid credentials |
+| **TS-002**      | Failed login with invalid credentials   |
+| **TS-003**      | Add product to shopping cart            |
+
+---
+
+### Test Cases
+
+| **Test Case ID** | **Description**     | **Steps**                                | **Expected Result**             |
+| ---------------- | ------------------- | ---------------------------------------- | ------------------------------- |
+| **TC-001**       | Successful Login    | Enter valid credentials → Click Login    | Navigates to inventory page     |
+| **TC-002**       | Failed Login        | Enter invalid username → Click Login     | Displays error message          |
+| **TC-003**       | Add Product to Cart | Login successfully → Click "Add to cart" | Shopping cart icon shows 1 item |
+
+---
+
+### 1. Successful Login
+
+```python
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()
+driver.get("https://www.saucedemo.com/")
+
+driver.find_element(By.ID, "user-name").send_keys("standard_user")
+driver.find_element(By.ID, "password").send_keys("secret_sauce")
+driver.find_element(By.ID, "login-button").click()
+
+# Verify navigation
+assert "inventory" in driver.current_url
+
+driver.quit()
+```
+
+This script opens the login page, enters valid credentials, and asserts that the user lands on the inventory page.
+
+---
+
+### 2. Failed Login
+
+```python
+driver = webdriver.Chrome()
+driver.get("https://www.saucedemo.com/")
+
+driver.find_element(By.ID, "user-name").send_keys("wrong_user")
+driver.find_element(By.ID, "password").send_keys("wrong_password")
+driver.find_element(By.ID, "login-button").click()
+
+# Verify error message appears
+error = driver.find_element(By.CLASS_NAME, "error-message-container")
+assert error.is_displayed()
+
+driver.quit()
+```
+
+This test checks that invalid credentials trigger a visible error message instead of granting access.
+
+---
+
+### 3. Add Product to Cart
+
+```python
+driver = webdriver.Chrome()
+driver.get("https://www.saucedemo.com/")
+
+# Login first
+driver.find_element(By.ID, "user-name").send_keys("standard_user")
+driver.find_element(By.ID, "password").send_keys("secret_sauce")
+driver.find_element(By.ID, "login-button").click()
+
+# Add product to cart
+driver.find_element(By.ID, "add-to-cart-sauce-labs-backpack").click()
+cart_badge = driver.find_element(By.CLASS_NAME, "shopping_cart_badge")
+assert cart_badge.text == "1"
+
+driver.quit()
+```
+
+This test ensures that adding a product updates the shopping cart badge correctly.
+
+---
+
+### Bonus Tips
+
+* Always **close the browser** after each test to free resources:
+
+  ```python
+  driver.quit()
+  ```
+* Use **`time.sleep()`** or **explicit waits** (`WebDriverWait`) for elements that take time to load.
+* Structure your tests with frameworks like **Pytest** for better organization and reporting.
+* For larger projects, implement the **Page Object Model (POM)** to keep your test scripts clean and maintainable.
+
+---
+
+### Wrapping Up
+
+Selenium WebDriver is more than just a testing tool — it's your personal automation companion for web applications.
+From login forms to full e-commerce workflows, Selenium can save you hours of repetitive manual testing and improve the accuracy of your results.
+
+It's powerful, flexible, and endlessly customizable — perfect for developers and testers who want precise control over browser automation.
+
+> **Remember:** With great automation comes great responsibility (and the occasional mysterious pop-up).
+
+So grab your virtual robot, automate responsibly, and may your bugs be ever in your favor.

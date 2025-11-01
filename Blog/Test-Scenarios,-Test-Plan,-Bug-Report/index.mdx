@@ -1,0 +1,181 @@
+---
+title: "Test Scenarios, Test Cases, and Bug Reports"
+date: "2025-10-13"
+author: "Naufal"
+tags: ["Software Testing", "Test Cases", "Bug Reports", "Quality Assurance"]
+description: 'A practical guide to creating test scenarios, detailed test cases, and effective bug reports, illustrated with a BMI Calculator App example to ensure reliable software delivery.'
+---
+
+# Test Scenarios, Test Cases, and Bug Reports
+Delivering a reliable and user-friendly application requires more than just good code — it requires structured and consistent testing.
+Three key elements form the foundation of this process: **test scenarios**, **test cases**, and **bug reports**.
+
+Together, these components help ensure that every feature of the software works as intended, errors are identified early, and issues are communicated clearly to developers.
+In this article, we'll explore what each of these components means, how they connect, and how they can be applied using a **BMI Calculator App** example.
+
+---
+
+### Understanding Test Scenarios, Test Cases, and Bug Reports
+
+#### Test Scenarios
+
+A **test scenario** is a high-level description of what needs to be tested. It represents *what to test*, not *how to test it*.
+Each scenario describes a specific function or workflow that needs verification — for example, checking whether a BMI calculator correctly handles user input.
+
+Well-defined test scenarios ensure that **all key functionalities are covered** and help testers align their work with the system's business requirements.
+
+**Simple Test Scenario Template:**
+
+| **Field**          | **Description**                            |
+| ------------------ | ------------------------------------------ |
+| **Scenario ID**    | A unique identifier for each scenario      |
+| **Description**    | A short summary of what the scenario tests |
+| **Module/Feature** | The part of the application being tested   |
+
+---
+
+#### Test Cases
+
+A **test case** breaks down each scenario into **detailed steps** — showing *how* to test it, what input to use, and what result to expect.
+
+Each test case includes specific data, preconditions, steps, and expected outcomes, ensuring consistency and repeatability.
+Good test cases help testers confirm that each function behaves correctly under various conditions.
+
+**Simple Test Case Template:**
+
+| **Field**           | **Description**                                     |
+| ------------------- | --------------------------------------------------- |
+| **Test Case ID**    | Unique ID for the test case                         |
+| **Description**     | Short summary of what the test verifies             |
+| **Precondition(s)** | Conditions that must exist before testing           |
+| **Test Steps**      | Step-by-step instructions to perform the test       |
+| **Test Data**       | The input used for testing                          |
+| **Expected Result** | The outcome expected if the feature works correctly |
+| **Actual Result**   | What actually happens when the test is executed     |
+| **Status**          | Whether the test passed or failed                   |
+
+---
+
+#### Bug Reports
+
+A **bug report** is a formal record of any defect found during testing. It should be **clear, concise, and reproducible**, allowing developers to quickly identify and fix the issue.
+
+A well-written bug report not only saves time but also prevents miscommunication between testers and developers.
+
+**Bug Report Template:**
+
+| **Field**              | **Description**                                            |
+| ---------------------- | ---------------------------------------------------------- |
+| **Bug Title**          | A short, descriptive summary of the problem                |
+| **Bug ID**             | A unique identifier for tracking                           |
+| **Steps to Reproduce** | Exact actions that trigger the issue                       |
+| **Actual Result**      | What actually happened                                     |
+| **Expected Result**    | What should have happened                                  |
+| **Build Number**       | Version of the software tested                             |
+| **Severity**           | The seriousness of the issue (Low, Minor, Major, Critical) |
+| **Priority**           | The urgency of fixing it (P1–P4)                           |
+| **Assignee**           | Developer assigned to fix the issue                        |
+| **Reporter**           | The person who found and reported the bug                  |
+| **Reported On**        | The date the bug was reported                              |
+| **Tested On**          | Platform or device used during testing                     |
+
+---
+
+### Applying the Concepts: BMI Calculator App Example
+
+To illustrate how these elements work together, let's look at a simple **BMI Calculator App** that allows users to input height and weight, calculate their BMI, view their classification, and save history records.
+
+---
+
+### Test Scenarios and Test Cases
+
+| **Scenario ID** | **Description**                                         | **Module/Feature Tested** |
+| --------------- | ------------------------------------------------------- | ------------------------- |
+| **TS001**       | Verify functionality of weight and height input sliders | Input Sliders             |
+| **TS002**       | Verify BMI calculation and category classification      | BMI Calculation           |
+| **TS003**       | Verify BMI history saving and retrieval                 | History Module            |
+
+---
+
+#### Scenario TS001 – Input Slider Validation
+
+| **Test Case ID** | **Description**                                                      | **Precondition**                 | **Test Steps**                                                              | **Test Data** | **Expected Result**                                   |
+| ---------------- | -------------------------------------------------------------------- | -------------------------------- | --------------------------------------------------------------------------- | ------------- | ----------------------------------------------------- |
+| **TC001**        | Verify that the weight slider accepts valid input range (30–200 kg)  | App launched and on input screen | 1. Move the weight slider from min to max. <br> 2. Observe displayed value. | 30, 100, 200  | Weight label updates correctly to match slider value. |
+| **TC002**        | Verify that the height slider accepts valid input range (100–250 cm) | App launched and on input screen | 1. Move the height slider from min to max. <br> 2. Observe displayed value. | 100, 170, 250 | Height label updates correctly to match slider value. |
+
+---
+
+#### Scenario TS002 – BMI Calculation and Classification
+
+| **Test Case ID** | **Description**                                       | **Precondition** | **Test Steps**                                                              | **Test Data**                       | **Expected Result**                                   |
+| ---------------- | ----------------------------------------------------- | ---------------- | --------------------------------------------------------------------------- | ----------------------------------- | ----------------------------------------------------- |
+| **TC003**        | Verify BMI calculation using standard formula (kg/m²) | App launched     | 1. Enter height: 170 cm <br> 2. Enter weight: 65 kg <br> 3. Tap "Calculate" | Height = 170 cm <br> Weight = 65 kg | BMI displayed as **22.49**, correct based on formula. |
+| **TC004**        | Verify BMI classification for underweight result      | App launched     | Enter height: 170 cm, weight: 45 kg                                         | Height = 170 cm <br> Weight = 45 kg | Displays **BMI = 15.6**, category **"Underweight."**  |
+| **TC005**        | Verify BMI classification for normal result           | App launched     | Enter height: 165 cm, weight: 60 kg                                         | Height = 165 cm <br> Weight = 60 kg | Displays **BMI = 22.0**, category **"Normal."**       |
+| **TC006**        | Verify BMI classification for overweight result       | App launched     | Enter height: 170 cm, weight: 75 kg                                         | Height = 170 cm <br> Weight = 75 kg | Displays **BMI = 25.9**, category **"Overweight."**   |
+| **TC007**        | Verify BMI classification for obese result            | App launched     | Enter height: 165 cm, weight: 90 kg                                         | Height = 165 cm <br> Weight = 90 kg | Displays **BMI = 33.1**, category **"Obese."**        |
+
+---
+
+#### Scenario TS003 – BMI History Management
+
+| **Test Case ID** | **Description**                                                 | **Precondition**            | **Test Steps**                                                                     | **Test Data**                       | **Expected Result**                                     |
+| ---------------- | --------------------------------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------- | ------------------------------------------------------- |
+| **TC008**        | Verify saving of the latest BMI result to history               | App launched                | 1. Perform BMI calculation <br> 2. Tap "Save History"                              | Height = 170 cm <br> Weight = 65 kg | User redirected to history page, latest result appears. |
+| **TC009**        | Verify saving multiple BMI records without losing previous data | App has existing saved data | 1. Perform several BMI calculations and save each result <br> 2. Open history page | Various inputs                      | All saved records appear in correct order, none lost.   |
+
+---
+
+### Example of a Bug Report
+
+| **Field**              | **Details**                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------------ |
+| **Bug Title**          | Incorrect BMI calculation for input weight = 60 kg, height = 170 cm                        |
+| **Bug ID**             | BMI-001                                                                                    |
+| **Steps to Reproduce** | 1. Open BMI app <br> 2. Enter Weight: 60 <br> 3. Enter Height: 170 <br> 4. Tap "Calculate" |
+| **Actual Result**      | BMI shown as 12.5                                                                          |
+| **Expected Result**    | BMI should be **20.8** according to the correct formula                                    |
+| **Build Number**       | v1.0.0                                                                                     |
+| **Severity**           | **Major (High)** — Main functionality gives incorrect output                               |
+| **Priority**           | **P2 - High**                                                                              |
+| **Assignee**           | Developer                                                                                  |
+| **Reporter**           | Software Quality Assurance (SQA)                                                           |
+| **Reported On**        | August 31, 2025                                                                            |
+| **Tested On**          | Android Device                                                                             |
+
+---
+
+### Best Practices for Reducing Bugs
+
+Preventing bugs is often easier — and cheaper — than fixing them.
+Here are some effective ways to reduce bugs throughout the development cycle:
+
+1. **Understand Requirements Clearly**
+   Make sure all requirements are unambiguous and fully understood before testing begins.
+
+2. **Write Unit Tests Early**
+   Automated unit tests catch logic errors at the earliest stage.
+
+3. **Conduct Code Reviews**
+   Peer reviews help identify issues before they reach production.
+
+4. **Develop a Detailed Test Plan**
+   Align scope, objectives, and schedules to ensure thorough coverage.
+
+5. **Leverage Test Automation**
+   Automate repetitive tasks and regression testing for faster feedback.
+
+6. **Encourage Team Collaboration**
+   Regular communication between developers and testers ensures smoother workflows and shared understanding.
+
+---
+
+### Conclusion
+
+By systematically defining **test scenarios**, breaking them down into **detailed test cases**, and documenting issues through **clear bug reports**, teams can dramatically improve software quality.
+
+A disciplined approach to testing doesn't just reveal problems — it prevents them.
+In the end, every well-written test and every bug caught early contribute to a more stable, reliable, and enjoyable user experience.
+
+> **Testing is not just about finding bugs — it's about building confidence in the software you deliver.**

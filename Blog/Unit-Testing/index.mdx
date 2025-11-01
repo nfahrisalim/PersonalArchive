@@ -1,0 +1,252 @@
+---
+title: "Unit Testing"
+date: "2025-10-14"
+author: "Naufal"
+tags: ["Unit Testing", "Software Testing", "Test Automation", "Quality Assurance"]
+description: 'A comprehensive guide to unit testing principles and practices, with practical examples using Pytest and JUnit 5 to ensure code reliability and maintainability.'
+---
+
+# Unit Testing
+Imagine making changes to your code, deploying confidently — and knowing it won't break anything.
+That's the power of **unit testing**.
+
+Unit testing is one of the most fundamental practices in software development. It allows developers to detect and fix problems early by testing the smallest individual pieces of code — such as functions, methods, or classes — in complete isolation.
+
+When done properly, unit tests act as a safety net. They ensure each component behaves as intended before users ever encounter a problem.
+In this guide, we'll explore what unit testing is, why it matters, what makes a good test, and how to write practical examples in **Python (Pytest)** and **Java (JUnit 5)**.
+
+---
+
+### What is Unit Testing?
+
+**Unit testing** involves testing the smallest possible units of a program — usually a single function, method, or class — in isolation from the rest of the system.
+
+The purpose is to verify that each part of the code performs its job correctly under various conditions. These tests are usually **automated** and are run frequently during the development cycle, often after each commit or build.
+
+In short:
+
+> **Unit testing ensures that every individual part of your software behaves exactly as expected, every time.**
+
+---
+
+### Characteristics of Good Unit Tests
+
+A well-written unit test should have the following traits:
+
+* **Isolated:**
+  Each test focuses on a single function or unit and doesn't depend on other parts of the system (like databases, APIs, or shared data).
+
+* **Repeatable:**
+  Running the same test multiple times should always yield the same result — regardless of the environment.
+
+* **Fast:**
+  Unit tests should execute quickly. Fast tests encourage developers to run them frequently during development.
+
+* **Clear and Focused:**
+  Each test should check only *one behavior* or *requirement*. This makes test results easier to understand and debug.
+
+---
+
+### Why Invest in Unit Testing?
+
+While writing tests can seem time-consuming at first, the long-term benefits are significant:
+
+* **Reliability:**
+  Automated tests ensure that new code doesn't break existing functionality (preventing regressions).
+
+* **Maintainability:**
+  When you refactor or optimize code, existing unit tests confirm that behavior remains correct.
+
+* **Early Bug Detection:**
+  Problems are caught during development — not after release — reducing time and cost to fix them.
+
+* **Living Documentation:**
+  Unit tests serve as "executable documentation," showing exactly how the code is expected to behave.
+
+* **Developer Confidence:**
+  With solid test coverage, developers can make changes boldly, knowing that the tests will catch unexpected issues.
+
+In short:
+
+> **Good unit testing saves time, reduces stress, and builds trust in your codebase.**
+
+---
+
+### Popular Unit Testing Frameworks
+
+Here are some of the most widely used tools for writing and running unit tests:
+
+* **JUnit 5 (Java):**
+  The standard testing framework for Java. It provides annotations, assertions, and seamless integration with IDEs and build tools (Maven, Gradle).
+
+* **Jest (JavaScript/TypeScript):**
+  Offers built-in mocking, snapshot testing, and zero configuration setup. Ideal for frontend or Node.js projects.
+
+* **Pytest (Python):**
+  Known for its simple syntax, detailed reporting, and flexibility through fixtures — suitable for projects of all sizes.
+
+Each framework encourages structured, repeatable, and automated testing that fits easily into modern development workflows.
+
+---
+
+### The Arrange–Act–Assert (AAA) Pattern
+
+A clear and widely used structure for writing tests is the **AAA pattern**:
+
+1. **Arrange:**
+   Set up the necessary objects, variables, or states required for the test.
+
+2. **Act:**
+   Execute the function or method being tested.
+
+3. **Assert:**
+   Verify that the result matches expectations.
+
+Using this pattern improves readability and helps ensure each test has a consistent, logical flow.
+
+Example structure:
+
+```python
+def test_example():
+    # Arrange
+    setup_data()
+    # Act
+    result = perform_action()
+    # Assert
+    assert result == expected_value
+```
+
+---
+
+### Practical Examples
+
+Let's look at how unit testing works in practice using both **Python (Pytest)** and **Java (JUnit 5)**.
+
+---
+
+#### Pytest Example (Python)
+
+Imagine a simple `ShoppingCart` class that lets users add items and check the total number of items in their cart.
+
+**shopping_cart.py**
+
+```python
+class ShoppingCart:
+    def __init__(self):
+        self.items = []
+
+    def add(self, item):
+        self.items.append(item)
+
+    def total_items(self):
+        return len(self.items)
+```
+
+Now, let's create a corresponding test using **Pytest**.
+
+**test_shopping_cart.py**
+
+```python
+from shopping_cart import ShoppingCart
+
+def test_add_item():
+    cart = ShoppingCart()           # Arrange
+    cart.add("apple")               # Act
+    assert cart.total_items() == 1  # Assert
+```
+
+**How it works:**
+
+* `test_add_item()` verifies that adding an item correctly increases the cart count.
+* Pytest automatically detects files and functions prefixed with `test_`.
+* Assertions use plain Python `assert` statements, making tests clean and easy to read.
+
+**Run the tests:**
+
+```bash
+pytest
+```
+
+Pytest will automatically find and execute all test files.
+
+---
+
+#### JUnit 5 Example (Java)
+
+Now, let's see how this looks in Java with a simple **BankAccount** class.
+
+**BankAccount.java**
+
+```java
+public class BankAccount {
+    private int balance = 0;
+
+    public void deposit(int amount) {
+        balance += amount;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+}
+```
+
+And here's the corresponding **JUnit 5 test:**
+
+**BankAccountTest.java**
+
+```java
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class BankAccountTest {
+    @Test
+    void depositIncreasesBalance() {
+        BankAccount account = new BankAccount(); // Arrange
+        account.deposit(100);                    // Act
+        assertEquals(100, account.getBalance()); // Assert
+    }
+}
+```
+
+**How it works:**
+
+* The `@Test` annotation marks the method as a test.
+* `assertEquals()` verifies that the result matches the expected outcome.
+* JUnit tests can be run directly from IDEs or through build tools like **Maven** and **Gradle**.
+
+---
+
+### Best Practices for Effective Unit Testing
+
+1. **Test Edge and Corner Cases**
+   Don't just test the "happy path." Include boundary conditions, invalid inputs, and exceptions.
+
+2. **Use Mocks and Stubs**
+   Replace external dependencies (e.g., databases or APIs) with mocks to isolate the unit being tested.
+
+3. **Keep Tests Independent**
+   Each test should be self-contained and not rely on results from previous tests.
+
+4. **Automate Test Execution**
+   Integrate tests into your **CI/CD pipeline** (e.g., GitHub Actions, Jenkins) to ensure they run automatically on every commit or build.
+
+5. **Name Tests Clearly**
+   A good test name describes *what behavior* is being tested and *what is expected*.
+   Example: `test_deposit_increases_balance()` is better than `test1()`.
+
+6. **Maintain Test Readability**
+   Clean, descriptive tests are easier to update when the application evolves.
+
+---
+
+### Conclusion
+
+Unit testing is more than a technical process — it's a development mindset.
+By testing individual components early and often, developers can confidently evolve their codebase while minimizing risk.
+
+Frameworks like **Pytest** and **JUnit 5** make it easier than ever to automate tests, catch bugs early, and maintain software quality over time.
+
+> **Remember:** Unit testing isn't just about finding bugs — it's about ensuring your code remains reliable, maintainable, and ready for change.
+
+A little time spent writing tests today can save countless hours of debugging tomorrow.
